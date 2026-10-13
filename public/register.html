@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Hotspot - Konoha Network</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0d1117 0%, #1a0f00 50%, #111827 100%);
+            --card-bg: rgba(22, 27, 34, 0.85);
+            --border-color: rgba(249, 115, 22, 0.25);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --primary: #f97316; /* Orange Konoha */
+            --primary-hover: #ea580c;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Shinobi Accent Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            z-index: 0;
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+        }
+
+        .header h1 { 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700;
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px;
+        }
+
+        .header p { 
+            color: var(--text-secondary); 
+            font-size: 14px; 
+        }
+
+        .form-group { 
+            margin-bottom: 18px; 
+        }
+
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: var(--text-secondary); 
+            font-weight: 500; 
+            font-size: 13px; 
+        }
+
+        .form-group input {
+            width: 100%; 
+            padding: 13px 16px; 
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; 
+            color: var(--text-primary);
+            font-size: 14px; 
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+        }
+
+        .btn {
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn:active { 
+            transform: translateY(0); 
+        }
+
+        .btn:disabled { 
+            background: rgba(255, 255, 255, 0.05); 
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: none;
+        }
+
+        .message { 
+            padding: 14px 16px; 
+            border-radius: 12px; 
+            margin-top: 20px; 
+            font-size: 14px;
+            display: none; 
+        }
+
+        .message.success { 
+            background: rgba(16, 185, 129, 0.15); 
+            color: var(--success); 
+            border: 1px solid rgba(16, 185, 129, 0.3); 
+        }
+
+        .message.error { 
+            background: rgba(239, 68, 68, 0.15); 
+            color: var(--danger); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+        }
+
+        .login-link { 
+            text-align: center; 
+            margin-top: 22px; 
+            color: var(--text-secondary); 
+            font-size: 14px;
+        }
+
+        .login-link a { 
+            color: #fb923c; 
+            text-decoration: none; 
+            font-weight: 600; 
+        }
+
+        .login-link a:hover { 
+            text-decoration: underline; 
+        }
+
+        .loading {
+            display: inline-block; 
+            width: 16px; 
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3); 
+            border-radius: 50%; 
+            border-top-color: white;
+            animation: spin 0.8s linear infinite; 
+            margin-right: 8px; 
+            vertical-align: middle;
+        }
+
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍥 Registrasi Hotspot</h1>
+            <p>Daftar untuk akses jaringan Shinobi Konoha</p>
+        </div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Masukkan email">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Nomor Telepon</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon">
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Masukkan username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Masukkan password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Konfirmasi Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Konfirmasi password">
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">
+                <span id="btnText">Daftar Sekarang</span>
+            </button>
+        </form>
+
+        <div class="message" id="message"></div>
+
+        <div class="login-link">
+            Sudah punya akun? <a href="login.html">Login di sini</a>
+        </div>
+    </div>
+
+    <script>
+        // Alamat domain backend Vercel yang aktif secara mutlak
+        const BACKEND_URL = 'https://henok-lake.vercel.app';
+
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const message = document.getElementById('message');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showMessage('Password tidak cocok!', 'error');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                username: document.getElementById('username').value,
+                password: password
+            };
+
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span> Memproses...';
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/register`, {
+                    method: 'POST',
+                    mode: 'cors', // Menjamin izin akses lintas domain dari MikroTik ke Vercel
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showMessage(data.message || 'Registrasi berhasil! Mengalihkan...', 'success');
+                    form.reset();
+
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    showMessage(data.message || 'Gagal mendaftarkan akun.', 'error');
+                }
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                showMessage('Gagal terhubung ke server backend. Periksa koneksi Walled Garden.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Daftar Sekarang';
+            }
+        });
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
